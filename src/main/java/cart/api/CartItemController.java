@@ -49,22 +49,25 @@ public class CartItemController {
 		}
 	}
 
+	
 	@GetMapping("/cart-items/{id}")
 	public CartItem getCartItem(@PathVariable String id) {
 		return cartRepo.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
 	}
 
 	// Update
-
+	
 	@PutMapping("/cart-items/{id}")
-	public CartItem updateCartItem(@PathVariable String id, @RequestBody CartItem cartItem) {
-		CartItem retreivedItem = cartRepo.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
-		
+	public CartItem updateCartItem(@PathVariable("id") String id, @RequestBody CartItem cartItem) {
+		cartRepo.findById(id).orElseThrow(() -> new ItemNotFoundException(id));	
+		cartItem.setId(id);
 		cartRepo.save(cartItem);
 		return cartItem;
-	
 	}
 
+	
+	
+	
 	@ResponseBody
 	@ExceptionHandler(ItemNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
